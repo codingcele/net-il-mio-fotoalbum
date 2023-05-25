@@ -1,0 +1,64 @@
+﻿﻿@{
+    ViewData["Title"] = "Dettagli immagini";
+    Layout = "_Layout";
+}
+
+@model Image
+
+<div class="row mb-3 fw-bold">
+    <div class="col d-flex align-items-center fs-4 pb-2">
+        <div class="col-4">
+            Foto
+        </div>
+        <div class="col-1 text-center">
+            Titolo
+        </div>
+        <div class="col-3 text-center">
+            Descrizione
+        </div>
+        <div class="col-2 text-center">
+            Categorie
+        </div>
+    </div>
+</div>
+
+<div class="row mb-3">
+    <div class="col d-flex align-items-center fs-4 pb-2">
+        <div class="col-4">
+            <img src="@Model.Picture" style="width: 250px; height: 170px;" />
+        </div>
+        <div class="col-1 text-center">
+            @Model.Title
+        </div>
+        <div class="col-3 text-center">
+            @Model.Description
+        </div>
+        <div class="col-2 text-center">
+            @foreach (Category category in @Model.Categories)
+            {
+                List<Category> categories = Model.Categories;
+                if (categories.IndexOf(category) != categories.Count - 1)
+                {
+                    <span> @category.Name,</span>
+                }
+                else if (categories.Count != 1)
+                {
+                    <span> @category.Name.</span>
+                }
+                else
+                {
+                    <span> @category.Name</span>
+                }
+            }
+        </div>
+        <div class="col-2 text-center pl-4">
+            <a href="@Url.Action("Update", "Home", new { id = @Model.Id })" class="btn" style="background-color:green; color:white;">Modifica</a>
+            <form asp-controller="Home" asp-action="Delete" asp-route-id="@Model.Id" method="post">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="btn btn-danger btn-sm">
+                    Elimina
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
