@@ -15,7 +15,7 @@
         </div>
         <div class="mb-3">
             <strong>Immagine:</strong>
-            <input asp-for="Image.Picture" class="d-block w-100" />
+            <input type="file" asp-for="Image.Picture" class="d-block w-100" accept="image/*" />
             @*<span asp-validation-for="Image.Picture" class="text-danger"></span>*@
         </div>
         <div class="mb-3">
