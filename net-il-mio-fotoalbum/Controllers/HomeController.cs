@@ -2,8 +2,9 @@
 using net_il_mio_fotoalbum.Models;
 using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace net_il_mio_fotoalbum.Controllers
+namespace net_il_mio_fotoalbum
 {
     public class HomeController : Controller
     {
@@ -19,7 +20,7 @@ namespace net_il_mio_fotoalbum.Controllers
         public IActionResult Index()
         {
             List<Image> images;
-            images = _context.Images.Include(i => i.Categories).ToList<Image>();
+            images = _context.Images.Include(i => i.Categories).ToList();
 
             return View(images);
         }
@@ -64,6 +65,19 @@ namespace net_il_mio_fotoalbum.Controllers
             {
                 return NotFound();
             }
+        }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            List<Category> categories = _context.Categories.ToList();
+
+            ImageFormModel model = new ImageFormModel();
+
+            model.Image = new Image();
+            model.Categories = categories;
+
+            return View("Create", model);
         }
     }
 }
