@@ -30,7 +30,7 @@
         </div>
         <div class="mb-3">
             <strong>Categorie:</strong><br />
-            @foreach (var category in Model.Categories)
+            @foreach (Category category in Model.Categories)
             {
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" id="@(category.Id)" name="SelectedCategories" value="@category.Id"/>

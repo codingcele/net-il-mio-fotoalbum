@@ -11,6 +11,7 @@ namespace net_il_mio_fotoalbum
         private readonly ILogger<HomeController> _logger;
         private readonly AlbumContext _context;
 
+
         public HomeController(ILogger<HomeController> logger, AlbumContext context)
         {
             _logger = logger;
@@ -50,6 +51,7 @@ namespace net_il_mio_fotoalbum
             }
         }
 
+
         public IActionResult Delete(int id)
         {
             Image imageToDelete = _context.Images.Where(img => img.Id == id).FirstOrDefault();
@@ -79,5 +81,52 @@ namespace net_il_mio_fotoalbum
 
             return View("Create", model);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(ImageFormModel data)
+        {
+            if (!ModelState.IsValid)
+            {
+                List<Category> categories = _context.Categories.ToList();
+
+                data.Categories = categories;
+
+                return View("Create", data);
+            }
+
+            Image imageToCreate = new Image();
+            imageToCreate.Title = data.Image.Title;
+
+
+
+
+            imageToCreate.Picture = data.Image.Picture;
+
+
+
+
+            imageToCreate.Visible = data.Image.Visible;
+            imageToCreate.Description = data.Image.Description;
+
+
+            imageToCreate.Categories = new List<Category>();
+
+
+            if (data.SelectedCategories != null)
+            {
+                foreach (int selectedCategoryId in data.SelectedCategories)
+                {
+                    Category category = _context.Categories.Where(m => m.Id == selectedCategoryId).FirstOrDefault();
+                    imageToCreate.Categories.Add(category);
+                }
+            }
+
+            _context.Images.Add(imageToCreate);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
     }
 }

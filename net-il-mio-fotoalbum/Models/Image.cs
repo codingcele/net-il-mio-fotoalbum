@@ -15,14 +15,18 @@ namespace net_il_mio_fotoalbum
         [Required]
         public string Title { get; set; }
         public string? Description { get; set; }
-
         [Required]
-        [DisplayName("Upload immagine")]
         public string Picture { get; set; }
+        [Required]
         public bool Visible { get; set; }
         public List<Category>? Categories { get; set; }
 
         [NotMapped]
-        public IFormFile ImageFile { get; set; }
+        public IFormFile? ImageFile { get; set; }
+
+        public Image()
+        {
+
+        }
     }
 }
