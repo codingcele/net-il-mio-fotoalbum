@@ -23,4 +23,11 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\img\mago_400px.png" />
+    <None Include="wwwroot\img\nati.PNG" />
+    <None Include="wwwroot\img\profile_linkedin.png" />
+    <None Include="wwwroot\img\unnamed.jpg" />
+  </ItemGroup>
+
 </Project>
