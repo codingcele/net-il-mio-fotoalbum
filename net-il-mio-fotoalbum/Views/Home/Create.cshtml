@@ -6,7 +6,7 @@
 @model ImageFormModel
 
 <div class="container">
-    <form asp-controller="Home" asp-action="Create" method="post">
+    <form asp-controller="Home" enctype="multipart/form-data" asp-action="Create" method="post">
         @Html.AntiForgeryToken()
         <div class="mb-3">
             <strong>Title:</strong>
@@ -15,7 +15,7 @@
         </div>
         <div class="mb-3">
             <strong>Immagine:</strong>
-            <input asp-for="Image.Picture" type="file" name="ImageFile" class="d-block w-100" accept="image/*" />
+            <input asp-for="ImageFile" class="custom-file-input" id="customFile">
         </div>
 
         <div class="mb-3">

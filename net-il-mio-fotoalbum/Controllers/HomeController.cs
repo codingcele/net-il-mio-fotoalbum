@@ -3,6 +3,9 @@ using net_il_mio_fotoalbum.Models;
 using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
+using Microsoft.AspNetCore.Http;
 
 namespace net_il_mio_fotoalbum
 {
@@ -10,12 +13,13 @@ namespace net_il_mio_fotoalbum
     {
         private readonly ILogger<HomeController> _logger;
         private readonly AlbumContext _context;
+        private readonly IWebHostEnvironment _hostingEnvironment;
 
-
-        public HomeController(ILogger<HomeController> logger, AlbumContext context)
+        public HomeController(ILogger<HomeController> logger, AlbumContext context, IWebHostEnvironment hostingEnvironment)
         {
             _logger = logger;
             _context = context;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         public IActionResult Index()
@@ -84,7 +88,7 @@ namespace net_il_mio_fotoalbum
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(ImageFormModel data)
+        public async Task<IActionResult> Create(ImageFormModel data)
         {
             if (!ModelState.IsValid)
             {
@@ -98,13 +102,19 @@ namespace net_il_mio_fotoalbum
             Image imageToCreate = new Image();
             imageToCreate.Title = data.Image.Title;
 
+            if (data.ImageFile != null)
+            {
+                var fileName = Path.GetFileName(data.ImageFile.FileName);
+                var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "img");
+                var filePath = Path.Combine(folderPath, fileName);
 
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    data.ImageFile.CopyTo(fileStream);
+                }
 
-
-            imageToCreate.Picture = data.Image.Picture;
-
-
-
+                imageToCreate.Picture = fileName;
+            }
 
             imageToCreate.Visible = data.Image.Visible;
             imageToCreate.Description = data.Image.Description;

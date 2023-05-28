@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
 
 namespace net_il_mio_fotoalbum
 {
@@ -11,5 +12,6 @@ namespace net_il_mio_fotoalbum
         public List<Category>? Categories { get; set; }
 
         public List<int>? SelectedCategories { get; set; }
+        public IFormFile? ImageFile { get; set; }
     }
 }
