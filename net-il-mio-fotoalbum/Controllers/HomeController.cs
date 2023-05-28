@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace net_il_mio_fotoalbum
 {
@@ -136,6 +138,41 @@ namespace net_il_mio_fotoalbum
             _context.SaveChanges();
 
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Update(int id)
+        {
+            Image imageToEdit = _context.Images.Where(img => img.Id == id).Include(i => i.Categories).FirstOrDefault();
+            
+            if (imageToEdit == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                ImageFormModel model = new ImageFormModel();
+
+                model.Image = imageToEdit;
+                List<Category> categories = _context.Categories.ToList();
+
+                List<int> categoryIds = imageToEdit.Categories.Select(c => c.Id).ToList();
+                model.SelectedCategories = categoryIds;
+
+                model.Categories = categories;
+                model.SelectedCategories = categoryIds;
+
+                string currentDirectory = Directory.GetCurrentDirectory();
+                string wwwrootPath = Path.Combine(currentDirectory, "wwwroot");
+                string imagePath = Path.Combine(wwwrootPath, "img", imageToEdit.Picture);
+
+                using (var stream = new FileStream(imagePath, FileMode.Create))
+                {
+                    await model.ImageFile.CopyToAsync(stream);
+                }
+
+                return View(model);
+            }
         }
 
     }
