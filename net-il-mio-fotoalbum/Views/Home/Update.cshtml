@@ -1,0 +1,81 @@
+﻿﻿@{
+    ViewData["Title"] = "Modifica immagine";
+    Layout = "_Layout";
+}
+
+@model ImageFormModel
+
+<form asp-controller="Album" asp-action="Update" asp-route-itemid="@Model.Image.Id" method="post">
+    @Html.AntiForgeryToken()
+    <div class="mb-3">
+        <strong>
+            Titolo:
+        </strong>
+        <input asp-for="Image.Title" class="d-block w-100">
+    </div>
+    <div class="mb-3">
+        <strong>Immagine:</strong>
+        <div class="custom-file">
+            <input type="file" name="ImageFile.FileName" asp-for="ImageFile" class="custom-file-input" id="customFile" onchange="updateFileName()">
+            <label class="custom-file-label" for="customFile">@((Model.ImageFile != null) ? Model.ImageFile.FileName : "Scegli file")</label>
+        </div>
+    </div>
+    <div class="mb-3">
+        <strong>
+            Descrizione:
+        </strong>
+        <input asp-for="Image.Description" class="d-block w-100">
+    </div>
+    <div class="mb-3">
+        <strong>Visibile:</strong>
+        <input type="hidden" asp-for="Image.Visible" id="visibleInput" value="True" />
+        <button type="button" class="btn btn-primary toggle-visible" onclick="toggleVisible()" style="width: 4vw; margin-left: 2vw">Si</button>
+    </div>
+    <div class="mb-3">
+        <strong>Categorie:</strong><br />
+        @foreach (Category category in Model.Categories)
+        {
+            bool isSelected = Model.SelectedCategories != null && Model.SelectedCategories.Contains(category.Id);
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="@(category.Id)" name="SelectedCategories" value="@category.Id" @(isSelected ? "checked" : "") />
+                <label class="form-check-label" for="@(category.Id)">
+                    @category.Name
+                </label>
+            </div>
+        }
+    </div>
+    <div class="text-end">
+        <input type="submit" class="btn btn-small btn-success" value="Salva">
+    </div>
+</form>
+
+
+<style>
+    .toggle-visible.true {
+        background-color: red;
+        color: white;
+    }
+</style>
+
+@section scripts {
+    <script>
+        function toggleVisible() {
+            var visibleInput = document.getElementById('visibleInput');
+            var visibleButton = document.querySelector('.toggle-visible');
+            var visibleValue = visibleInput.value;
+            var newValue = (visibleValue == 'True') ? 'False' : 'True';
+            visibleInput.value = newValue;
+
+            visibleButton.textContent = (newValue == 'True') ? 'Si' : 'No';
+            visibleButton.classList.toggle('true');
+        }
+
+        function updateFileName() {
+        var input = document.getElementById('customFile');
+        var fileName = input.files[0].name;
+        var label = input.nextElementSibling;
+        label.innerHTML = fileName;
+    }
+    </script>
+}

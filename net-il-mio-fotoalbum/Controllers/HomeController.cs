@@ -165,11 +165,9 @@ namespace net_il_mio_fotoalbum
                 string currentDirectory = Directory.GetCurrentDirectory();
                 string wwwrootPath = Path.Combine(currentDirectory, "wwwroot");
                 string imagePath = Path.Combine(wwwrootPath, "img", imageToEdit.Picture);
-
-                using (var stream = new FileStream(imagePath, FileMode.Create))
-                {
-                    await model.ImageFile.CopyToAsync(stream);
-                }
+                var fileInfo = new FileInfo(imagePath);
+                var formFile = new FormFile(new FileStream(imagePath, FileMode.Open), 0, fileInfo.Length, null, fileInfo.Name);
+                model.ImageFile = formFile;
 
                 return View(model);
             }
