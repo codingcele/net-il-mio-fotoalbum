@@ -3,9 +3,9 @@
     Layout = "_Layout";
 }
 
-@model ImageFormModel
+@model ImageFormUpdateModel
 
-<form asp-controller="Album" asp-action="Update" asp-route-itemid="@Model.Image.Id" method="post">
+<form asp-controller="Home" asp-action="Update" enctype="multipart/form-data" asp-route-itemid="@Model.Image.Id" method="post">
     @Html.AntiForgeryToken()
     <div class="mb-3">
         <strong>
@@ -20,7 +20,7 @@
                 <img id="previewImage" src="~/img/@((Model.ImageFile != null) ? Model.ImageFile.FileName : "placeholder.jpg")" style="width: 250px; height: 170px; margin-right: 1vw;" />                
                 <label id="imageName" class="custom-file-label" for="customFile">@((Model.ImageFile != null) ? Model.ImageFile.FileName : "Scegli file")</label>
             </div>
-            <input type="file" asp-for="ImageFile" class="custom-file-input" id="customFile" onchange="updateFile(this)" style="color: transparent;">
+            <input asp-for="ImageFile" class="custom-file-input" id="customFile" onchange="updateFile(this)" style="color: transparent;">
         </div>
     </div>
     <div class="mb-3">

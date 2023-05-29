@@ -151,7 +151,7 @@ namespace net_il_mio_fotoalbum
             }
             else
             {
-                ImageFormModel model = new ImageFormModel();
+                ImageFormUpdateModel model = new ImageFormUpdateModel();
 
                 model.Image = imageToEdit;
                 List<Category> categories = _context.Categories.ToList();
@@ -170,6 +170,66 @@ namespace net_il_mio_fotoalbum
                 model.ImageFile = formFile;
 
                 return View(model);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Update(int id, ImageFormUpdateModel data)
+        {
+            if (!ModelState.IsValid)
+            {
+                List<Category> categories = _context.Categories.ToList();
+
+                data.Categories = categories;
+
+                return View("Update", data);
+            }
+
+            Image imageToEdit = _context.Images.Where(img => img.Id == id).Include(i => i.Categories).FirstOrDefault();
+
+            if (imageToEdit != null)
+            {
+                imageToEdit.Title = data.Image.Title;
+
+                if (data.ImageFile != null)
+                {
+                    var fileName = Path.GetFileName(data.ImageFile.FileName);
+                    var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "img");
+                    var filePath = Path.Combine(folderPath, fileName);
+
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        data.ImageFile.CopyTo(fileStream);
+                    }
+
+                    imageToEdit.Picture = fileName;
+                }
+
+
+                imageToEdit.Description = data.Image.Description;
+                imageToEdit.Visible = data.Image.Visible;
+
+                imageToEdit.Categories = new List<Category>();
+
+                imageToEdit.Categories.Clear();
+
+                if (data != null && data.SelectedCategories != null)
+                {
+                    foreach (int selectedCategoryId in data.SelectedCategories)
+                    {
+                        Category category = _context.Categories.Where(c => c.Id == selectedCategoryId).FirstOrDefault();
+                        imageToEdit.Categories.Add(category);
+                    }
+                }
+
+                _context.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return NotFound();
             }
         }
 
