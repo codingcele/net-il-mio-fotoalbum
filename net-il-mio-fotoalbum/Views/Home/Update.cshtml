@@ -15,9 +15,12 @@
     </div>
     <div class="mb-3">
         <strong>Immagine:</strong>
-        <div class="custom-file">
-            <input type="file" name="ImageFile.FileName" asp-for="ImageFile" class="custom-file-input" id="customFile" onchange="updateFileName()">
-            <label class="custom-file-label" for="customFile">@((Model.ImageFile != null) ? Model.ImageFile.FileName : "Scegli file")</label>
+        <div class="custom-file mt-1">
+            <div class="mb-1">
+                <img id="previewImage" src="~/img/@((Model.ImageFile != null) ? Model.ImageFile.FileName : "placeholder.jpg")" style="width: 250px; height: 170px; margin-right: 1vw;" />                
+                <label id="imageName" class="custom-file-label" for="customFile">@((Model.ImageFile != null) ? Model.ImageFile.FileName : "Scegli file")</label>
+            </div>
+            <input type="file" asp-for="ImageFile" class="custom-file-input" id="customFile" onchange="updateFile(this)" style="color: transparent;">
         </div>
     </div>
     <div class="mb-3">
@@ -71,11 +74,21 @@
             visibleButton.classList.toggle('true');
         }
 
-        function updateFileName() {
-        var input = document.getElementById('customFile');
-        var fileName = input.files[0].name;
-        var label = input.nextElementSibling;
-        label.innerHTML = fileName;
-    }
+        function updateFile(input) {
+            var input = document.getElementById('customFile');
+            var fileName = input.files[0].name;
+            var imageName = document.getElementById('imageName');
+            imageName.innerHTML = fileName;
+
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    document.getElementById('previewImage').src = e.target.result;
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
     </script>
 }
