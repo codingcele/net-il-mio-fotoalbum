@@ -17,7 +17,7 @@
         <strong>Immagine:</strong>
         <div class="custom-file mt-1">
             <div class="mb-1">
-                <img id="previewImage" src="~/img/@((Model.ImageFile != null) ? Model.ImageFile.FileName : "placeholder.jpg")" style="width: 250px; height: 170px; margin-right: 1vw;" />                
+                <img id="previewImage" src="~/img/@((Model.ImageFile != null) ? Model.ImageFile.FileName : Model.Image.Picture)" style="width: 250px; height: 170px; margin-right: 1vw;" />                
                 <label id="imageName" class="custom-file-label" for="customFile">@((Model.ImageFile != null) ? Model.ImageFile.FileName : "Scegli file")</label>
             </div>
             <input asp-for="ImageFile" class="custom-file-input" id="customFile" onchange="updateFile(this)" style="color: transparent;">
@@ -31,8 +31,12 @@
     </div>
     <div class="mb-3">
         <strong>Visibile:</strong>
-        <input type="hidden" asp-for="Image.Visible" id="visibleInput" value="True" />
-        <button type="button" class="btn btn-primary toggle-visible" onclick="toggleVisible()" style="width: 4vw; margin-left: 2vw">Si</button>
+        <input type="hidden" asp-for=@Model.Image.Visible id="visibleInput" value="@Model.Image.Visible" />
+        @{
+            string buttonClass = Model.Image.Visible ? "btn-primary" : "btn-danger";
+            string buttonText = Model.Image.Visible ? "Si" : "No";
+        }
+        <button type="button" id="visibleButton" class="btn @buttonClass" onclick="toggleVisible()" style="width: 4vw; margin-left: 2vw">@buttonText</button>
     </div>
     <div class="mb-3">
         <strong>Categorie:</strong><br />
@@ -53,25 +57,18 @@
     </div>
 </form>
 
-
-<style>
-    .toggle-visible.true {
-        background-color: red;
-        color: white;
-    }
-</style>
-
 @section scripts {
     <script>
         function toggleVisible() {
             var visibleInput = document.getElementById('visibleInput');
-            var visibleButton = document.querySelector('.toggle-visible');
             var visibleValue = visibleInput.value;
             var newValue = (visibleValue == 'True') ? 'False' : 'True';
             visibleInput.value = newValue;
 
+            var visibleButton = document.getElementById('visibleButton');
             visibleButton.textContent = (newValue == 'True') ? 'Si' : 'No';
-            visibleButton.classList.toggle('true');
+            visibleButton.classList.toggle('btn-primary');
+            visibleButton.classList.toggle('btn-danger');
         }
 
         function updateFile(input) {

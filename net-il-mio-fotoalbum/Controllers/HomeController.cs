@@ -8,6 +8,7 @@ using System.IO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
+using System.ComponentModel.Design;
 
 namespace net_il_mio_fotoalbum
 {
@@ -166,8 +167,12 @@ namespace net_il_mio_fotoalbum
                 string wwwrootPath = Path.Combine(currentDirectory, "wwwroot");
                 string imagePath = Path.Combine(wwwrootPath, "img", imageToEdit.Picture);
                 var fileInfo = new FileInfo(imagePath);
-                var formFile = new FormFile(new FileStream(imagePath, FileMode.Open), 0, fileInfo.Length, null, fileInfo.Name);
-                model.ImageFile = formFile;
+
+                using (var fileStream = new FileStream(imagePath, FileMode.Open))
+                {
+                    var formFile = new FormFile(fileStream, 0, fileInfo.Length, null, fileInfo.Name);
+                    model.ImageFile = formFile;
+                }
 
                 return View(model);
             }
@@ -177,6 +182,8 @@ namespace net_il_mio_fotoalbum
         [ValidateAntiForgeryToken]
         public IActionResult Update(int id, ImageFormUpdateModel data)
         {
+            Image imageToEdit = _context.Images.Where(img => img.Id == id).Include(i => i.Categories).FirstOrDefault();
+
             if (!ModelState.IsValid)
             {
                 List<Category> categories = _context.Categories.ToList();
@@ -185,8 +192,7 @@ namespace net_il_mio_fotoalbum
 
                 return View("Update", data);
             }
-
-            Image imageToEdit = _context.Images.Where(img => img.Id == id).Include(i => i.Categories).FirstOrDefault();
+            
 
             if (imageToEdit != null)
             {
