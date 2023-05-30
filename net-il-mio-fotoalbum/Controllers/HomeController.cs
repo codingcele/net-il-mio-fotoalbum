@@ -189,6 +189,7 @@ namespace net_il_mio_fotoalbum
                 List<Category> categories = _context.Categories.ToList();
 
                 data.Categories = categories;
+                data.Image = imageToEdit;
 
                 return View("Update", data);
             }

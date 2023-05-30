@@ -18,7 +18,7 @@
         <div class="custom-file mt-1">
             <div class="mb-1">
                 <img id="previewImage" src="~/img/@((Model.ImageFile != null) ? Model.ImageFile.FileName : Model.Image.Picture)" style="width: 250px; height: 170px; margin-right: 1vw;" />                
-                <label id="imageName" class="custom-file-label" for="customFile">@((Model.ImageFile != null) ? Model.ImageFile.FileName : "Scegli file")</label>
+                <label id="imageName" class="custom-file-label" for="customFile">@((Model.ImageFile != null) ? Model.ImageFile.FileName : Model.Image.Picture)</label>
             </div>
             <input asp-for="ImageFile" class="custom-file-input" id="customFile" onchange="updateFile(this)" style="color: transparent;">
         </div>
