@@ -5,6 +5,12 @@
 
 @model List<Image>
 
+<div class="row mb-3">
+    <div class="col-3">
+        <input type="text" id="search" class="form-control" placeholder="Cerca per nome" onkeyup="loadImages(this.value)" />
+    </div>
+</div>
+
 <div class="row mb-3 fw-bold">
     <div class="col d-flex align-items-center fs-4 pb-2">
         <div class="col-3">
@@ -27,7 +33,7 @@
     <div class="row mb-3">
         <div class="col d-flex align-items-center fs-4 pb-2">
             <div class="col-3">
-                <img src="~/img/@image.Picture" style="width: 250px; height: 170px;" />
+                <img src="~/img/@image.Picture" style="max-width: 250px; max-height: 170px;" />
             </div>  
             <div class="col-2 text-center">
                 @image.Title
@@ -63,4 +69,8 @@
             </div>
         </div>
     </div>
+}
+
+@section Scripts {
+    <script type="text/javascript" src="~/js/API/index.js"></script>
 }
