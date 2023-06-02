@@ -28,48 +28,55 @@
     </div>
 </div>
 
-@foreach (var image in Model)
-{
-    <div class="row mb-3">
-        <div class="col d-flex align-items-center fs-4 pb-2">
-            <div class="col-3">
-                <img src="~/img/@image.Picture" style="max-width: 250px; max-height: 170px;" />
-            </div>  
-            <div class="col-2 text-center">
-                @image.Title
-            </div>
-            <div class="col-4 text-center">
-                @foreach (Category category in image.Categories)
-                {
-                    List<Category> categories = image.Categories;
-                    if (categories.IndexOf(category) != categories.Count - 1)
+<div id="images">
+    @foreach (var image in Model)
+    {
+        <div class="row mb-3">
+            <div class="col d-flex align-items-center fs-4 pb-2">
+                <div class="col-3">
+                    <img src="~/img/@image.Picture" style="max-width: 250px; max-height: 170px;" />
+                </div>  
+                <div class="col-2 text-center">
+                    @image.Title
+                </div>
+                <div class="col-4 text-center">
+                    @foreach (Category category in image.Categories)
                     {
-                        <span> @category.Name,</span>
+                        List<Category> categories = image.Categories;
+                        if (categories.IndexOf(category) != categories.Count - 1)
+                        {
+                            <span> @category.Name,</span>
+                        }
+                        else if (categories.Count != 1)
+                        {
+                            <span> @category.Name.</span>
+                        }
+                        else
+                        {
+                            <span> @category.Name</span>
+                        }
                     }
-                    else if (categories.Count != 1)
-                    {
-                        <span> @category.Name.</span>
-                    }
-                    else
-                    {
-                        <span> @category.Name</span>
-                    }
-                }
-            </div>
-            <div class="col-3 text-center pl-4">
-                <a href="@Url.Action("Update", "Home", new { id = image.Id })" class="btn" style="background-color:green; color:white;">Modifica</a>
-                <a href="@Url.Action("Details", "Home", new { id = image.Id })" class="btn btn-primary">Dettagli</a>
+                </div>
+                <div class="col-3 text-center pl-4">
+                    <a href="@Url.Action("Update", "Home", new { id = image.Id })" class="btn" style="background-color:green; color:white;">Modifica</a>
+                    <a href="@Url.Action("Details", "Home", new { id = image.Id })" class="btn btn-primary">Dettagli</a>
                 
-                <form asp-controller="Home" asp-action="Delete" asp-route-id="@image.Id" method="post">
-                    @Html.AntiForgeryToken()
-                    <button type="submit" class="btn btn-danger btn-sm">
-                        Elimina
-                    </button>
-                </form>
+                    <form asp-controller="Home" asp-action="Delete" asp-route-id="@image.Id" method="post">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            Elimina
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-}
+    }
+</div>
+<div id="filtered-images" class="d-none">
+</div>
+<div id="no-images" class="d-none">
+    Nessuna immagine trovata
+</div>
 
 @section Scripts {
     <script type="text/javascript" src="~/js/API/index.js"></script>

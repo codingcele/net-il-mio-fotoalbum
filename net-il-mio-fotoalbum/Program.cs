@@ -1,4 +1,5 @@
 using net_il_mio_fotoalbum;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +7,11 @@ builder.Services.AddDbContext<net_il_mio_fotoalbum.AlbumContext>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+//serve per evitare l'eccezione "System.Text.Json.JsonException: A possible object cycle was detected"
+//quando si caricano le entities collegate
+builder.Services.AddControllers()
+    .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 var app = builder.Build();
 
