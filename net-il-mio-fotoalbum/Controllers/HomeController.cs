@@ -12,6 +12,7 @@ using System.ComponentModel.Design;
 
 namespace net_il_mio_fotoalbum
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -58,7 +59,7 @@ namespace net_il_mio_fotoalbum
             }
         }
 
-
+        [Authorize(Roles = "ADMIN")]
         public IActionResult Delete(int id)
         {
             Image imageToDelete = _context.Images.Where(img => img.Id == id).FirstOrDefault();
@@ -76,6 +77,8 @@ namespace net_il_mio_fotoalbum
             }
         }
 
+
+        [Authorize(Roles = "ADMIN")]
         [HttpGet]
         public IActionResult Create()
         {
@@ -89,6 +92,7 @@ namespace net_il_mio_fotoalbum
             return View("Create", model);
         }
 
+        [Authorize(Roles = "ADMIN")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ImageFormModel data)
@@ -141,6 +145,7 @@ namespace net_il_mio_fotoalbum
             return RedirectToAction("Index");
         }
 
+        [Authorize(Roles = "ADMIN")]
         [HttpGet]
         public async Task<IActionResult> Update(int id)
         {
@@ -178,6 +183,7 @@ namespace net_il_mio_fotoalbum
             }
         }
 
+        [Authorize(Roles = "ADMIN")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Update(int id, ImageFormUpdateModel data)

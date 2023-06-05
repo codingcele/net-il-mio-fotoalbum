@@ -7,9 +7,11 @@ using System.Net;
 using Azure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Authorization;
 
 namespace net_il_mio_fotoalbum.Controllers.Api
 {
+    [Authorize]
     [Route("/Home")]
     [ApiController]
     public class HomeController : ControllerBase
