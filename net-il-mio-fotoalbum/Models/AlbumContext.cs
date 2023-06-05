@@ -1,10 +1,12 @@
 ﻿using System.Diagnostics;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using net_il_mio_fotoalbum.Models;
 
 namespace net_il_mio_fotoalbum
 {
-    public class AlbumContext : DbContext
+    public class AlbumContext : IdentityDbContext<IdentityUser>
     {
         public DbSet<Category> Categories { get; set; }
         public DbSet<Image> Images { get; set; }

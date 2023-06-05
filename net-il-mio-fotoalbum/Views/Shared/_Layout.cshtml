@@ -10,15 +10,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js" integrity="sha512-uMtXmF28A2Ab/JJO2t/vYhlaa/3ahUOgj1Zf27M5rOo8/+fcTUVH0/E0ll68njmjrLqOBjXM3V9NiPFL5ywWPQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+    <header class="d-flex justify-content-between align-items-center bg-white border-bottom box-shadow mb-3" style="height: 14vh">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">net_il_mio_fotoalbum</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <div class="col-12 navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
@@ -30,6 +25,15 @@
                 </div>
             </div>
         </nav>
+        <div id="navbarNav" class="d-flex flex-row justify-content-end bg-white" style="height: 6vh">
+            <ul class="navbar-nav d-flex flex-row" style="margin-right: 1vw;">
+                <li class="nav-item" style="margin-right: 1vw;">
+                    <a class="nav-link" aria-current="page" href="@Url.Action("Index", "User")">Admin</a>
+                </li>
+                <!-- code omitted -->
+                <partial name="_LoginPartial" />
+            </ul>
+        </div>
     </header>
     <div class="container">
         <main role="main" class="pb-3">

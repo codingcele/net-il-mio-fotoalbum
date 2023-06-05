@@ -1,8 +1,13 @@
 using net_il_mio_fotoalbum;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using net_il_mio_fotoalbum.Areas.Identity.Data;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddDbContext<net_il_mio_fotoalbum.AlbumContext>();
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<net_il_mio_fotoalbum.AlbumContext>();
 builder.Services.AddDbContext<net_il_mio_fotoalbum.AlbumContext>();
 
 // Add services to the container.
@@ -28,10 +33,14 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapRazorPages();
 
 app.Run();
