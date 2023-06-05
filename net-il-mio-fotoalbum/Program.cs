@@ -7,6 +7,7 @@ using net_il_mio_fotoalbum.Areas.Identity.Data;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<net_il_mio_fotoalbum.AlbumContext>();
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<net_il_mio_fotoalbum.AlbumContext>();
 builder.Services.AddDbContext<net_il_mio_fotoalbum.AlbumContext>();
 
