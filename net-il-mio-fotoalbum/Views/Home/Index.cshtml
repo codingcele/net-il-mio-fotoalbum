@@ -73,13 +73,14 @@
 
                         @if (User.IsInRole("ADMIN"))
                         {
-                            <form asp-controller="Home" asp-action="Delete" asp-route-id="@image.Id" method="post">
+                            <form asp-controller="Home" asp-action="Delete" asp-route-id="@image.Id" method="post" onsubmit="return confirmDelete(event)">
                                 @Html.AntiForgeryToken()
                                 <button type="submit" class="btn btn-danger btn-sm">
                                     Elimina
                                 </button>
                             </form>
                         }
+
                     </div>
                 </div>
             </div>
@@ -92,9 +93,33 @@
     Nessuna immagine trovata
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
     var isAdmin = document.getElementById("isAdmin").value === "true";
 </script>
+
+<script>
+    function confirmDelete(event) {
+        event.preventDefault(); // Impedisce l'invio del modulo immediato
+
+        Swal.fire({
+            title: 'Sei sicuro?',
+            text: 'Questa operazione non può essere annullata!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Elimina',
+            cancelButtonText: 'Annulla'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                event.target.submit(); // Invia il modulo dopo la conferma
+            }
+        });
+    }
+</script>
+
 
 @section Scripts {
     <script type="text/javascript" src="~/js/API/index.js"></script>
