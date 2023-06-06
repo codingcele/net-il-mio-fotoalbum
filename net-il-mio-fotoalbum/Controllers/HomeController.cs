@@ -211,17 +211,28 @@ namespace net_il_mio_fotoalbum
 
                 if (data.ImageFile != null)
                 {
-                    var fileName = Path.GetFileName(data.ImageFile.FileName);
+                    var fileName = Guid.NewGuid().ToString(); // Genera un nuovo nome univoco utilizzando un Guid
+                    var fileExtension = Path.GetExtension(data.ImageFile.FileName); // Ottieni l'estensione del file originale
+                    var uniqueFileName = fileName + fileExtension; // Unisci il nome univoco e l'estensione del file
+
                     var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "img");
-                    var filePath = Path.Combine(folderPath, fileName);
+                    var filePath = Path.Combine(folderPath, uniqueFileName);
 
                     using (var fileStream = new FileStream(filePath, FileMode.Create))
                     {
                         data.ImageFile.CopyTo(fileStream);
                     }
 
-                    imageToEdit.Picture = fileName;
+                    // Rimuovi il file precedente se esisteva
+                    var previousFilePath = Path.Combine(folderPath, imageToEdit.Picture);
+                    if (System.IO.File.Exists(previousFilePath))
+                    {
+                        System.IO.File.Delete(previousFilePath);
+                    }
+
+                    imageToEdit.Picture = uniqueFileName;
                 }
+
 
 
                 imageToEdit.Description = data.Image.Description;
