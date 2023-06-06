@@ -1,13 +1,15 @@
 ﻿﻿@{
     ViewData["Title"] = "Home Page";
     Layout = "_Layout";
+    bool isAdmin = User.IsInRole("ADMIN");
 }
 
 @model List<Image>
 
 <div class="row mb-3">
     <div class="col-3">
-        <input type="text" id="search" class="form-control" placeholder="Cerca per nome" onkeyup="loadImages(this.value)" />
+        <input type="text" id="search" class="form-control" placeholder="Cerca per nome" onkeyup="loadImages(this.value, isAdmin)" />
+        <input type="hidden" id="isAdmin" value="@isAdmin.ToString().ToLower()" />
     </div>
 </div>
 
@@ -22,9 +24,12 @@
         <div class="col-4 text-center">
             Categorie
         </div>
-        <div class="col-3 text-center pl-4">
-            <a href="@Url.Action("Create", "Home")" class="btn btn-primary">Aggiungi immagine</a>
-        </div>
+        @if (User.IsInRole("ADMIN"))
+        {
+            <div class="col-3 text-center pl-4">
+                <a href="@Url.Action("Create", "Home")" class="btn btn-primary">Aggiungi immagine</a>
+            </div>
+        }
     </div>
 </div>
 
@@ -58,15 +63,21 @@
                     }
                 </div>
                 <div class="col-3 text-center pl-4">
-                    <a href="@Url.Action("Update", "Home", new { id = image.Id })" class="btn" style="background-color:green; color:white;">Modifica</a>
+                    @if (User.IsInRole("ADMIN"))
+                    {
+                        <a href="@Url.Action("Update", "Home", new { id = image.Id })" class="btn" style="background-color:green; color:white;">Modifica</a>
+                    }
                     <a href="@Url.Action("Details", "Home", new { id = image.Id })" class="btn btn-primary">Dettagli</a>
-                
-                    <form asp-controller="Home" asp-action="Delete" asp-route-id="@image.Id" method="post">
-                        @Html.AntiForgeryToken()
-                        <button type="submit" class="btn btn-danger btn-sm">
-                            Elimina
-                        </button>
-                    </form>
+
+                    @if (User.IsInRole("ADMIN"))
+                    {
+                        <form asp-controller="Home" asp-action="Delete" asp-route-id="@image.Id" method="post">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                Elimina
+                            </button>
+                        </form>
+                    }
                 </div>
             </div>
         </div>
@@ -77,6 +88,10 @@
 <div id="no-images" class="d-none">
     Nessuna immagine trovata
 </div>
+
+<script>
+    var isAdmin = document.getElementById("isAdmin").value === "true";
+</script>
 
 @section Scripts {
     <script type="text/javascript" src="~/js/API/index.js"></script>

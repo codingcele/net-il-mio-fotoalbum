@@ -51,14 +51,17 @@
                 }
             }
         </div>
-        <div class="col-2 text-center pl-4">
-            <a href="@Url.Action("Update", "Home", new { id = @Model.Id })" class="btn" style="background-color:green; color:white;">Modifica</a>
-            <form asp-controller="Home" asp-action="Delete" asp-route-id="@Model.Id" method="post">
-                @Html.AntiForgeryToken()
-                <button type="submit" class="btn btn-danger btn-sm">
-                    Elimina
-                </button>
-            </form>
-        </div>
+        @if (User.IsInRole("ADMIN"))
+        {
+            <div class="col-2 text-center pl-4">
+                <a href="@Url.Action("Update", "Home", new { id = @Model.Id })" class="btn" style="background-color:green; color:white;">Modifica</a>
+                <form asp-controller="Home" asp-action="Delete" asp-route-id="@Model.Id" method="post">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-danger btn-sm">
+                        Elimina
+                    </button>
+                </form>
+            </div>
+        }
     </div>
 </div>
