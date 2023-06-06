@@ -66,11 +66,21 @@ namespace net_il_mio_fotoalbum
 
             if (imageToDelete != null)
             {
+                var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "img");
+                var filePath = Path.Combine(folderPath, imageToDelete.Picture);
+
+                // Elimina il file dal percorso specificato
+                if (System.IO.File.Exists(filePath))
+                {
+                    System.IO.File.Delete(filePath);
+                }
+
                 _context.Images.Remove(imageToDelete);
                 _context.SaveChanges();
 
                 return RedirectToAction("Index");
             }
+
             else
             {
                 return NotFound();
