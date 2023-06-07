@@ -22,5 +22,24 @@ namespace net_il_mio_fotoalbum
 
             return View(categories);
         }
+
+        [Authorize(Roles = "ADMIN")]
+        public IActionResult Delete(int id)
+        {
+            Category categoryToDelete = _context.Categories.Where(cat => cat.Id == id).FirstOrDefault();
+
+            if (categoryToDelete != null)
+            {
+                _context.Categories.Remove(categoryToDelete);
+                _context.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+
+            else
+            {
+                return NotFound();
+            }
+        }
     }
 }
