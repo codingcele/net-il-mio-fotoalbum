@@ -18,6 +18,26 @@
 
                 //svuoto la tabella
                 document.getElementById('filtered-images').innerHTML = '';
+
+                var rowHeader = document.createElement('div');
+                rowHeader.classList.add('row', 'mb-3', 'fw-bold');
+                var colHeader = document.createElement('div');
+                colHeader.classList.add('col', 'd-flex', 'align-items-center', 'fs-4', 'pb-2');
+                colHeader.innerHTML = 
+                    `
+                        <div class="col-3 text-center">
+                            Foto
+                        </div>
+                        <div class="col-2 text-center">
+                            Titolo
+                        </div>
+                        <div class="col-4 text-center">
+                            Categorie
+                        </div>
+                    `;
+                rowHeader.appendChild(colHeader);
+                document.getElementById('filtered-images').appendChild(rowHeader);
+
                 res.data.forEach(image => {
                     console.log('image', image);
 
