@@ -1,0 +1,23 @@
+﻿﻿@{
+    ViewData["Title"] = "Modifica categoria";
+    Layout = "_Layout";
+}
+
+@model CategoryFormModel
+
+<form asp-controller="Categories" asp-action="Update" enctype="multipart/form-data" asp-route-itemid="@Model.Id" method="post">
+    @Html.AntiForgeryToken()
+    <div class="mb-3">
+        <strong>
+            Nome:
+        </strong>
+        <input asp-for="Name" class="d-block w-100">
+    </div>
+    <div class="mb-3">
+        <strong>Descrizione:</strong>
+        <input asp-for="Description" class="d-block w-100">
+    </div>
+    <div class="text-end">
+        <input type="submit" class="btn btn-small btn-success" value="Salva">
+    </div>
+</form>
