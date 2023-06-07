@@ -9,13 +9,19 @@
 {
     <div id="imagesDb">
         <div class="row mb-3 fw-bold">
-            <div class="col d-flex align-items-center fs-4 pb-2">
-                <div class="col-4 text-center">
+            <div class="col d-flex align-items-center text-center fs-4 pb-2">
+                <div class="col-4">
                     Nome
                 </div>
-                <div class="col-4 text-center">
+                <div class="col-4">
                     Descrizione
                 </div>
+                @if (User.IsInRole("ADMIN"))
+                {
+                    <div class="col-4">
+                        <a href="@Url.Action("Create", "Categories")" class="btn btn-primary">Aggiungi categoria</a>
+                    </div>
+                }
             </div>
         </div>
 

@@ -9,7 +9,7 @@
     <form asp-controller="Home" enctype="multipart/form-data" asp-action="Create" method="post">
         @Html.AntiForgeryToken()
         <div class="mb-3">
-            <strong>Title:</strong>
+            <strong>Titolo:</strong>
             <input asp-for="Image.Title" class="d-block w-100" />
             @*<span asp-validation-for="Image.Name" class="text-danger"></span>*@
         </div>

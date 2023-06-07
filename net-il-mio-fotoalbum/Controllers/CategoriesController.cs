@@ -24,6 +24,37 @@ namespace net_il_mio_fotoalbum
         }
 
         [Authorize(Roles = "ADMIN")]
+        [HttpGet]
+        public IActionResult Create()
+        {
+
+            CategoryFormModel model = new CategoryFormModel();
+
+            return View("Create", model);
+        }
+
+        [Authorize(Roles = "ADMIN")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(CategoryFormModel data)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("Create", data);
+            }
+
+            Category categoryToCreate = new Category();
+            
+            categoryToCreate.Name = data.Name;
+            categoryToCreate.Description = data.Description;
+
+            _context.Categories.Add(categoryToCreate);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
+        [Authorize(Roles = "ADMIN")]
         public IActionResult Delete(int id)
         {
             Category categoryToDelete = _context.Categories.Where(cat => cat.Id == id).FirstOrDefault();

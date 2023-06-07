@@ -1,0 +1,25 @@
+﻿@{
+    ViewData["Title"] = "Aggiungi categoria";
+    Layout = "_Layout";
+}
+
+@model CategoryFormModel
+
+<div class="container">
+    <form asp-controller="Categories" enctype="multipart/form-data" asp-action="Create" method="post">
+        @Html.AntiForgeryToken()
+        <div class="mb-3">
+            <strong>Nome:</strong>
+            <input asp-for="Name" class="d-block w-100" />
+            @*<span asp-validation-for="Image.Name" class="text-danger"></span>*@
+        </div>
+        <div class="mb-3">
+            <strong>Descrizione:</strong>
+            <input asp-for="Description" class="d-block w-100" />
+            @*<span asp-validation-for="Image.Description" class="text-danger"></span>*@
+        </div>
+        <div class="text-end">
+            <input type="submit" class="btn btn-small btn-info" value="Aggiungi categoria">
+        </div>
+    </form>
+</div>
