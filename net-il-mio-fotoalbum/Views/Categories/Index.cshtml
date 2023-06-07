@@ -1,0 +1,61 @@
+﻿@{
+    ViewData["Title"] = "Gestione categorie";
+    Layout = "_Layout";
+}
+
+@model List<Category>
+
+@if (Model.Count != 0)
+{
+    <div id="imagesDb">
+        <div class="row mb-3 fw-bold">
+            <div class="col d-flex align-items-center fs-4 pb-2">
+                <div class="col-4 text-center">
+                    Nome
+                </div>
+                <div class="col-4 text-center">
+                    Descrizione
+                </div>
+            </div>
+        </div>
+
+        <div>
+            @foreach (var category in Model)
+            {
+                <div class="row mb-3">
+                    <div class="col d-flex align-items-center fs-4 pb-2">
+                        <div class="col-4 text-center">
+                            @category.Name
+                        </div>
+                        <div class="col-4 text-center">
+                            @category.Description
+                        </div>
+                        <div class="col-4 text-center pl-4">
+                            @if (User.IsInRole("ADMIN"))
+                            {
+                                <a href="@Url.Action("Update", "Categories", new { id = category.Id })" class="btn" style="background-color:green; color:white;">Modifica</a>
+                            }
+                            <a href="@Url.Action("Details", "Categories", new { id = category.Id })" class="btn btn-primary">Dettagli</a>
+
+                            @if (User.IsInRole("ADMIN"))
+                            {
+                                <form asp-controller="Categories" asp-action="Delete" asp-route-id="category.Id" method="post" onsubmit="return confirmDelete(event)">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        Elimina
+                                    </button>
+                                </form>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
+<div id="filtered-images" class="d-none">
+</div>
+<div id="no-images" class="@(Model.Count == 0 ? "" : "d-none")">
+    Nessuna immagine trovata
+</div>
