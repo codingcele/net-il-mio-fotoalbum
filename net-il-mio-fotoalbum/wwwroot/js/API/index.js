@@ -8,11 +8,11 @@
             console.log('risposta ok', res);
             console.log("isAdmin:", isAdmin);
             if (res.data.length == 0) {     //non ci sono post da mostrare => nascondo la tabella
-                document.getElementById('images').classList.add('d-none');
+                document.getElementById('imagesDb').classList.add('d-none');
                 document.getElementById('filtered-images').classList.add('d-none');
                 document.getElementById('no-images').classList.remove('d-none');
             } else {                        //ci sono post da mostrare => visualizzo la tabella
-                document.getElementById('images').classList.add('d-none');
+                document.getElementById('imagesDb').classList.add('d-none');
                 document.getElementById('no-images').classList.add('d-none');
                 document.getElementById('filtered-images').classList.remove('d-none');
 
@@ -67,6 +67,7 @@
                         updateLink.classList.add('btn');
                         updateLink.style.backgroundColor = 'green';
                         updateLink.style.color = 'white';
+                        updateLink.style.marginRight = '0.49vw';
                         updateLink.textContent = 'Modifica';
                         actionsDiv.appendChild(updateLink);
                     }
@@ -109,6 +110,5 @@
         })
         .catch((res) => {       //se la richiesta non è andata a buon fine
             console.error('errore', res);
-            alert('errore lista immagini');
         });
 }

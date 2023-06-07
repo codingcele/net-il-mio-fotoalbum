@@ -11,93 +11,107 @@
         <input type="text" id="search" class="form-control" placeholder="Cerca per nome" onkeyup="loadImages(this.value, isAdmin)" />
         <input type="hidden" id="isAdmin" value="@isAdmin.ToString().ToLower()" />
     </div>
-</div>
 
-<div class="row mb-3 fw-bold">
-    <div class="col d-flex align-items-center fs-4 pb-2">
-        <div class="col-3">
-            Foto
-        </div>
-        <div class="col-2 text-center">
-            Titolo
-        </div>
-        <div class="col-4 text-center">
-            Categorie
-        </div>
+    <div class="col-9 d-flex">
         @if (User.IsInRole("ADMIN"))
         {
-            <div class="col-3 text-center pl-4">
+            <div class="pl-4" style="margin-right: 2vw;">
+                <a href="@Url.Action("Index", "Categories")" class="btn btn-primary">Gestisci categorie</a>
+            </div>
+        }
+
+        @if (User.IsInRole("ADMIN"))
+        {
+            <div class="pl-4">
                 <a href="@Url.Action("Create", "Home")" class="btn btn-primary">Aggiungi immagine</a>
             </div>
         }
     </div>
 </div>
 
-<div id="images">
-    @foreach (var image in Model)
-    {
-        @if (User.IsInRole("ADMIN") | image.Visible)
-        {
-            <div class="row mb-3">
-                <div class="col d-flex align-items-center fs-4 pb-2">
-                    <div class="col-3">
-                        <img src="~/img/@image.Picture" style="max-width: 250px; max-height: 170px;" />
-                    </div>  
-                    <div class="col-2 text-center">
-                        @image.Title
-                    </div>
-                    <div class="col-4 text-center">
-                        @foreach (Category category in image.Categories)
-                        {
-                            List<Category> categories = image.Categories;
-                            if (categories.IndexOf(category) != categories.Count - 1)
-                            {
-                                <span> @category.Name,</span>
-                            }
-                            else if (categories.Count != 1)
-                            {
-                                <span> @category.Name.</span>
-                            }
-                            else
-                            {
-                                <span> @category.Name</span>
-                            }
-                        }
-                    </div>
-                    <div class="col-3 text-center pl-4">
-                        @if (User.IsInRole("ADMIN"))
-                        {
-                            <a href="@Url.Action("Update", "Home", new { id = image.Id })" class="btn" style="background-color:green; color:white;">Modifica</a>
-                        }
-                        <a href="@Url.Action("Details", "Home", new { id = image.Id })" class="btn btn-primary">Dettagli</a>
-
-                        @if (User.IsInRole("ADMIN"))
-                        {
-                            <form asp-controller="Home" asp-action="Delete" asp-route-id="@image.Id" method="post" onsubmit="return confirmDelete(event)">
-                                @Html.AntiForgeryToken()
-                                <button type="submit" class="btn btn-danger btn-sm">
-                                    Elimina
-                                </button>
-                            </form>
-                        }
-
-                    </div>
+@if (Model.Count != 0) {
+    <div id="imagesDb">
+        <div class="row mb-3 fw-bold">
+            <div class="col d-flex align-items-center fs-4 pb-2">
+                <div class="col-3 text-center">
+                    Foto
+                </div>
+                <div class="col-2 text-center">
+                    Titolo
+                </div>
+                <div class="col-4 text-center">
+                    Categorie
                 </div>
             </div>
-        }
-    }
-</div>
+        </div>
+
+        <div>
+            @foreach (var image in Model)
+            {
+                @if (User.IsInRole("ADMIN") | image.Visible)
+                {
+                    <div class="row mb-3">
+                        <div class="col d-flex align-items-center fs-4 pb-2">
+                            <div class="col-3">
+                                <img src="~/img/@image.Picture" style="max-width: 250px; max-height: 170px;" />
+                            </div>
+                            <div class="col-2 text-center">
+                                @image.Title
+                            </div>
+                            <div class="col-4 text-center">
+                                @foreach (Category category in image.Categories)
+                                {
+                                    List<Category> categories = image.Categories;
+                                    if (categories.IndexOf(category) != categories.Count - 1)
+                                    {
+                                        <span> @category.Name,</span>
+                                    }
+                                    else if (categories.Count != 1)
+                                    {
+                                        <span> @category.Name.</span>
+                                    }
+                                    else
+                                    {
+                                        <span> @category.Name</span>
+                                    }
+                                }
+                            </div>
+                            <div class="col-3 text-center pl-4">
+                                @if (User.IsInRole("ADMIN"))
+                                {
+                                    <a href="@Url.Action("Update", "Home", new { id = image.Id })" class="btn" style="background-color:green; color:white;">Modifica</a>
+                                }
+                                <a href="@Url.Action("Details", "Home", new { id = image.Id })" class="btn btn-primary">Dettagli</a>
+
+                                @if (User.IsInRole("ADMIN"))
+                                {
+                                    <form asp-controller="Home" asp-action="Delete" asp-route-id="@image.Id" method="post" onsubmit="return confirmDelete(event)">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-danger btn-sm">
+                                            Elimina
+                                        </button>
+                                    </form>
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+}
 <div id="filtered-images" class="d-none">
 </div>
-<div id="no-images" class="d-none">
+<div id="no-images" class="@(Model.Count == 0 ? "" : "d-none")">
     Nessuna immagine trovata
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
     var isAdmin = document.getElementById("isAdmin").value === "true";
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
     function confirmDelete(event) {
