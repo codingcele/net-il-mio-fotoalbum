@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace net_il_mio_fotoalbum.Areas.Identity.Data;
 
-public class AlbumContext : IdentityDbContext<IdentityUser>
+public class IdentityContext : IdentityDbContext<IdentityUser>
 {
-    public AlbumContext(DbContextOptions<AlbumContext> options)
+    public IdentityContext(DbContextOptions<IdentityContext> options)
         : base(options)
     {
     }

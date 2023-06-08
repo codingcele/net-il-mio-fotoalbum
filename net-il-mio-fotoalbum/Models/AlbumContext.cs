@@ -10,6 +10,7 @@ namespace net_il_mio_fotoalbum
     {
         public DbSet<Category> Categories { get; set; }
         public DbSet<Image> Images { get; set; }
+        public DbSet<Message> Messages { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

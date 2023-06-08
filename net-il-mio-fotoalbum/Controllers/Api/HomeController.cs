@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Authorization;
 
+using net_il_mio_fotoalbum.Models;
+
 namespace net_il_mio_fotoalbum.Controllers.Api
 {
     [Authorize]
@@ -35,6 +37,26 @@ namespace net_il_mio_fotoalbum.Controllers.Api
             }
 
             return Ok(images);
+        }
+
+        [HttpPost]
+        public IActionResult SaveMessage([FromBody] MessageModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var message = new Message
+                {
+                    Email = model.Email,
+                    MessageText = model.Message
+                };
+
+                _context.Messages.Add(message);
+                _context.SaveChanges();
+
+                return Ok();
+            }
+
+            return BadRequest(ModelState);
         }
     }
 }

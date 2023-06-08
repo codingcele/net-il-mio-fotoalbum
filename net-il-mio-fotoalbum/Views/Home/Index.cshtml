@@ -107,6 +107,25 @@
     Nessuna immagine trovata
 </div>
 
+<div class="container d-flex justify-content-center">
+    <div class="col-4">
+        <h3 class="text-center">Contattami</h3>
+        <form>
+            <div class="form-group">
+                <strong for="email" class="text-center">Email</strong>
+                <input type="email" class="form-control" style="margin-bottom: 2vh; margin-top: 2vh;" id="email" placeholder="Inserisci la tua email">
+            </div>
+            <div class="form-group">
+                <strong for="message" class="text-center">Messaggio</strong>
+                <textarea class="form-control" style="margin-bottom: 2vh; margin-top: 2vh;" id="message" rows="5" placeholder="Lascia un messaggio"></textarea>
+            </div>
+            <div class="col-12 d-flex justify-content-center">
+                <button onclick="sendMessage()" type="submit" class="btn btn-primary align-self-center">Invia</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <script>
     var isAdmin = document.getElementById("isAdmin").value === "true";
 </script>

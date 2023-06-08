@@ -132,3 +132,21 @@
             console.error('errore', res);
         });
 }
+
+function sendMessage() {
+    var email = $('#email').val();
+    var message = $('#message').val();
+
+    var data = {
+        email: email,
+        message: message
+    };
+
+    axios.post('/Home', data)
+        .then((res) => {        //se la richiesta va a buon fine
+            console.log('Messaggio inviato con successo');
+        })
+        .catch((res) => {       //se la richiesta non è andata a buon fine
+            console.error('errore', res);
+        });
+}
