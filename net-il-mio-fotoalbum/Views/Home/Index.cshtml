@@ -114,25 +114,25 @@
             <div class="form-group">
                 <strong for="email" class="text-center">Email</strong>
                 <input type="email" class="form-control" style="margin-bottom: 2vh; margin-top: 2vh;" id="email" placeholder="Inserisci la tua email">
+                <span id="emailError" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <strong for="message" class="text-center">Messaggio</strong>
                 <textarea class="form-control" style="margin-bottom: 2vh; margin-top: 2vh;" id="message" rows="5" placeholder="Lascia un messaggio"></textarea>
+                <span id="messageError" class="text-danger"></span>
             </div>
-            <div class="col-12 d-flex justify-content-center">
-                <button onclick="sendMessage()" type="submit" class="btn btn-primary align-self-center">Invia</button>
+            <div class="col-12 d-flex justify-content-center" style="margin-top: 2vh;">
+                <button onclick="event.preventDefault(); sendMessage();" type="submit" class="btn btn-primary align-self-center">Invia</button>
             </div>
         </form>
     </div>
 </div>
 
-<script>
-    var isAdmin = document.getElementById("isAdmin").value === "true";
-</script>
-
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
+    var isAdmin = document.getElementById("isAdmin").value === "true";
+
     function confirmDelete(event) {
         event.preventDefault(); // Impedisce l'invio del modulo immediato
 

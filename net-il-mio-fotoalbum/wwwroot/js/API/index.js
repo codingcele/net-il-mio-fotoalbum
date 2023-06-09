@@ -133,9 +133,38 @@
         });
 }
 
+function clearErrors() {
+    document.getElementById('emailError').textContent = '';
+    document.getElementById('messageError').textContent = '';
+}
+
+function displayError(field, errorMessage) {
+    document.getElementById(field + 'Error').textContent = errorMessage;
+}
+
+function displayErrors(field, errorMessage) {
+    var errorElement;
+    if (field === 'Email') {
+        errorElement = document.getElementById('emailError');
+    } else if (field === 'Message') {
+        errorElement = document.getElementById('messageError');
+    }
+
+    if (errorElement) {
+        errorElement.textContent = errorMessage;
+    }
+}
+
+function clearErrors() {
+    document.getElementById('emailError').textContent = '';
+    document.getElementById('messageError').textContent = '';
+}
+
 function sendMessage() {
-    var email = $('#email').val();
-    var message = $('#message').val();
+    clearErrors();
+
+    var email = document.getElementById('email').value;
+    var message = document.getElementById('message').value;
 
     var data = {
         email: email,
@@ -143,10 +172,24 @@ function sendMessage() {
     };
 
     axios.post('/Home', data)
-        .then((res) => {        //se la richiesta va a buon fine
+        .then((res) => {
             console.log('Messaggio inviato con successo');
+            document.getElementById('email').value = '';
+            document.getElementById('message').value = '';
         })
-        .catch((res) => {       //se la richiesta non è andata a buon fine
-            console.error('errore', res);
+        .catch((error) => {
+            if (error.response) {
+                var errors = error.response.data.errors;
+
+                for (var field in errors) {
+                    var fieldErrors = errors[field];
+                    var errorMessage = fieldErrors.join(' ');
+
+                    displayErrors(field, errorMessage);
+                }
+            } else {
+                console.error('Error:', error.message);
+            }
         });
+
 }

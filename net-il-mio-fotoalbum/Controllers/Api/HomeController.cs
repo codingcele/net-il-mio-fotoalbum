@@ -42,21 +42,16 @@ namespace net_il_mio_fotoalbum.Controllers.Api
         [HttpPost]
         public IActionResult SaveMessage([FromBody] MessageModel model)
         {
-            if (ModelState.IsValid)
+            var message = new Message
             {
-                var message = new Message
-                {
-                    Email = model.Email,
-                    MessageText = model.Message
-                };
+                Email = model.Email,
+                MessageText = model.Message
+            };
 
-                _context.Messages.Add(message);
-                _context.SaveChanges();
+            _context.Messages.Add(message);
+            _context.SaveChanges();
 
-                return Ok();
-            }
-
-            return BadRequest(ModelState);
+            return Ok();
         }
     }
 }

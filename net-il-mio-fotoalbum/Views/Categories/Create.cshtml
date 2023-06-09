@@ -11,12 +11,12 @@
         <div class="mb-3">
             <strong>Nome:</strong>
             <input asp-for="Name" class="d-block w-100" />
-            @*<span asp-validation-for="Image.Name" class="text-danger"></span>*@
+            <span asp-validation-for="@Model.Name" class="text-danger"></span>
         </div>
         <div class="mb-3">
             <strong>Descrizione:</strong>
             <input asp-for="Description" class="d-block w-100" />
-            @*<span asp-validation-for="Image.Description" class="text-danger"></span>*@
+            <span asp-validation-for="@Model.Description" class="text-danger"></span>
         </div>
         <div class="text-end">
             <input type="submit" class="btn btn-small btn-info" value="Aggiungi categoria">
